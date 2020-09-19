@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--errorLevel - level 1 is the most strict, level 8 is the most lenient.-->
+<psalm
+        errorLevel="6"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="Modules"/>
+        <directory name="app"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <ignoreExceptions>
+        <class name="Modules/Records/Repositories/RecordsRepository"/>
+    </ignoreExceptions>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
+</psalm>

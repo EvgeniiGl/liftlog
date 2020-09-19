@@ -1,0 +1,26 @@
+#version: '3'
+#services:
+#mydb:
+# image: postgres
+# volumes:
+# - db-data:/var/lib/postgresql/data
+##ports:
+## - 5432:5432/tc
+#
+#volumes:
+#db-data:
+#driver: local
+
+
+version: '3'
+services:
+  database:
+    image: postgres
+    env_file:
+      - database.env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    ports:
+      - 5432:5432
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose

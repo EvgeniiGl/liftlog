@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react",
+    "module": "es6",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    //не использумые переменные
+    "removeComments": true,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "outDir": "build",
+    "esModuleInterop": true,
+    "lib": [
+      "es6",
+      "es7",
+      "dom"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@img/*": [
+        "resources/img/*"
+      ],
+      "@core/*": [
+        "resources/js/react/core/*"
+      ],
+      "@react/*": [
+        "resources/js/react/*"
+      ]
+    }
+  },
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules",
+    "vendor",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts",
+    "**/*.spec.ts"
+  ]
+}

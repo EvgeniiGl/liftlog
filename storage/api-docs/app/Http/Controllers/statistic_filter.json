@@ -1,0 +1,103 @@
+{
+  "required": [
+    "status",
+    "code",
+    "message",
+    "data"
+  ],
+  "properties": {
+    "status": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "number"
+    },
+    "message": {
+      "type": "string"
+    },
+    "data": {
+      "required": [
+        "current_page",
+        "data",
+        "first_page_url",
+        "from",
+        "last_page",
+        "last_page_url",
+        "next_page_url",
+        "path",
+        "per_page",
+        "prev_page_url",
+        "to",
+        "total"
+      ],
+      "properties": {
+        "current_page": {
+          "type": "number"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "num": {
+                "type": "string"
+              },
+              "creator_id": {
+                "type": "string"
+              },
+              "time_create": {
+                "type": "string"
+              },
+              "time_incident": {
+                "type": "string"
+              },
+              "evacuation": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "total": {
+                "type": "string"
+              },
+              "addresses": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "first_page_url": {
+          "type": "string"
+        },
+        "from": {
+          "type": "number"
+        },
+        "last_page": {
+          "type": "number"
+        },
+        "last_page_url": {
+          "type": "string"
+        },
+        "next_page_url": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "per_page": {
+          "type": "number"
+        },
+        "to": {
+          "type": "number"
+        },
+        "total": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
