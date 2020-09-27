@@ -14,7 +14,8 @@ class CreateRecordsTable extends Migration
     public function up()
     {
         Schema::create('records', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->integer('num');
             $table->integer('creator_id');
             $table->string('type');
             $table->text('theme')->nullable();
@@ -30,15 +31,8 @@ class CreateRecordsTable extends Migration
             $table->dateTime('time_evacuation',4)->nullable();
             $table->boolean('evacuation')->default(0);
             $table->softDeletes();
-            $table->timestamps(4);
+            $table->timestamps();
         });
-
-        Schema::table('records', function (Blueprint $table) {
-            $table->foreign('creator_id')->references('id')->on('users');
-            $table->foreign('maker_id')->references('id')->on('users');
-            $table->foreign('closer_id')->references('id')->on('users');
-        });
-
     }
 
     /**

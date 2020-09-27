@@ -10,17 +10,43 @@
 #volumes:
 #db-data:
 #driver: local
+#only postgresql
+#version: '3'
+#services:
+#  database:
+#    image: postgres
+#    env_file:
+#      - database.env # configure postgres
+#    volumes:
+#      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+#    ports:
+#      - 5432:5432
+#volumes:
+#  database-data: # named volumes can be managed easier using docker-compose
 
-
-version: '3'
+version: '3.3'
 services:
-  database:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Nginx.Dockerfile
+    ports:cd
+      - 8098:80
+    links:
+      - fpm
+    volumes:
+      - ./:/var/www/liftlog
+  fpm:
+    build:
+      context: .
+      dockerfile: docker/Fpm.Dockerfile
+    volumes:
+      - ./:/var/www/liftlog
+    links:
+      - postgres
+  postgres:
     image: postgres
     env_file:
       - database.env # configure postgres
-    volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
-      - 5432:5432
-volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+      - 54321:5432
