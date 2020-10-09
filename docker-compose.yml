@@ -30,7 +30,7 @@ services:
     build:
       context: .
       dockerfile: docker/Nginx.Dockerfile
-    ports:cd
+    ports:
       - 8098:80
     links:
       - fpm

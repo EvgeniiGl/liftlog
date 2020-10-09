@@ -13,7 +13,8 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+
+        Schema::connection('pgsql_company')->create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('login')->unique();
             $table->string('password');

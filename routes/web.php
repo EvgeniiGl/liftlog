@@ -32,9 +32,26 @@ Route::group(
         Route::get('/filter', 'StatisticController@filter');
     }
 );
-/**
- * Route services
- */
+
+Route::group(
+    [
+        'prefix' => 'register'
+    ],
+    function () {
+        Route::get('/menu', 'Auth\RegisterController@menu')->name('register-menu');
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'company'
+    ],
+    function () {
+        Route::get('/registerForm', 'CompanyController@registerForm')->name('company-register-form');
+        Route::post('/register', 'CompanyController@register')->name('company-register');
+    }
+);
+
 Route::group(
     [
         'prefix' => 'service',

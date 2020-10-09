@@ -17,3 +17,4 @@ liftlog.iml
 .idea
 .phpstorm.meta.php
 resources/js/react
+.env.database

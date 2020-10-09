@@ -5,8 +5,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    @include('layouts.menu')
-
     <div class="nav navbar-right w-100">
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">

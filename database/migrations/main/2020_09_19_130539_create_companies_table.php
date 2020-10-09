@@ -15,11 +15,11 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('inn');
-            $table->string('phone');
+            $table->string('name', 1000);
+            $table->bigInteger('inn')->unique()->unsigned();
+            $table->bigInteger('phone');
             $table->string('email');
-            $table->bigInteger('db_name');
+            $table->string('db_name');
             $table->timestamps();
         });
     }
