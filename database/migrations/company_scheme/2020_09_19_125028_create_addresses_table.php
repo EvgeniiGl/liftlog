@@ -13,7 +13,7 @@ class CreateAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->mediumInteger('postcode')->nullable();
             $table->bigInteger('region_id');

@@ -13,7 +13,7 @@ class CreatePermissionRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('permission_role', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('permission_role', function (Blueprint $table) {
             $table->bigInteger('role_id');
             $table->bigInteger('permission_id');
         });

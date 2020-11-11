@@ -57,5 +57,27 @@ class CompanyRepository
     public function createScheme($data)
     {
         DB::statement(DB::raw("CREATE SCHEMA IF NOT EXISTS inn_{$data['company_inn']}"));
+
+//get migration queries
+//        config(['database.connections.pgsql_company.schema' => 'inn'.$data['company_inn']]);
+//        $path = '/var/www/liftlog/database/migrations/company_scheme'; //path from docker container
+//        $migrator = app('migrator');
+//        $db = $migrator->resolveConnection('pgsql_company');
+//        $migrations = $migrator->getMigrationFiles($path);
+//        $migrator->requireFiles($migrations);
+//        $queries = [];
+//
+//        foreach ($migrations as $migration) {
+//            $migration_name = $migration;
+//            $migration = $migrator->resolve($migrator->getMigrationName($migration_name));
+//
+//            $queries[] = [
+//                'name' => $migration_name,
+//                'queries' => array_column($db->pretend(function () use ($migration) {
+//                    $migration->up();
+//                }), 'query'),
+//            ];
+//        }
+//        dd($queries);
     }
 }

@@ -7,3 +7,6 @@ _ide_helper.phpINIT JS PROJECT (copy path and files into /public):
 
 
 ВАЖНО: Carbon выдает ошибку форматирования (created_at, updated_at) при работе с базой данных MSSQL 2013 года, fix - добавить формат даты в модели "protected $dateFormat" без милисекунд.
+
+
+### [technical specification](https://docs.google.com/spreadsheets/d/1adbpRLSe01Lt3wmA7m_kfQfanEOvDrZOzMMa_gvWcyM/edit#gid=0)

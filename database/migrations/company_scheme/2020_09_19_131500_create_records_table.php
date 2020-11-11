@@ -13,7 +13,7 @@ class CreateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('records', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('num');
             $table->integer('creator_id');

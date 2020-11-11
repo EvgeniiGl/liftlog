@@ -25,9 +25,9 @@ class CompanyController extends Controller
     {
         $data = $request->all();
         DB::beginTransaction();
+
         try {
             $this->companyRepository->saveCompany($data);
-            $this->companyRepository->createScheme($data);
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();

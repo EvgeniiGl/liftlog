@@ -177,6 +177,9 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         //        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Kreait\Laravel\Firebase\ServiceProvider::class,
+
+//        A2way\LaravelTenantMigrate\LaravelTenantMigrateServiceProvider::class,
+        A2way\LaravelTenantMigrate\A2WayLaravelTenantMigrateServiceProvider::class,
     ],
 
     /*

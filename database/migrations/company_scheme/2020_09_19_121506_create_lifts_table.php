@@ -13,7 +13,7 @@ class CreateLiftsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lifts', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('lifts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->tinyInteger('num')->nullable();
             $table->string('reg_num')->nullable();

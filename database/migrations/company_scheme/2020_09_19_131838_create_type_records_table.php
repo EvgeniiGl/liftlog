@@ -13,7 +13,7 @@ class CreateTypeRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_records', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('type_records', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
         });

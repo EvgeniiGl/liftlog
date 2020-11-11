@@ -13,7 +13,7 @@ class CreateLiftPersonTable extends Migration
      */
     public function up()
     {
-        Schema::create('lift_user', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('lift_user', function (Blueprint $table) {
             $table->bigInteger('lift_id');
             $table->bigInteger('person_id');
         });

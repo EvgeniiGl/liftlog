@@ -13,7 +13,7 @@ class CreateLiftRecordTable extends Migration
      */
     public function up()
     {
-        Schema::create('lift_record', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('lift_record', function (Blueprint $table) {
             $table->bigInteger('lift_id');
             $table->bigInteger('record_id');
         });

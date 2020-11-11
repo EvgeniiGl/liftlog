@@ -13,7 +13,7 @@ class CreatePersonRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_user', function (Blueprint $table) {
+        Schema::connection('pgsql_company')->create('role_user', function (Blueprint $table) {
             $table->bigInteger('role_id');
             $table->bigInteger('person_id');
         });
