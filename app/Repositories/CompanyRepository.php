@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Artisan;
 use Config;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CompanyRepository
@@ -50,11 +50,11 @@ class CompanyRepository
             'login' => $login,
             'password' => $password,
         ];
-        $result = DB::select(DB::raw($sql), $params);
-        return $result;
+
+        return DB::select(DB::raw($sql), $params);
     }
 
-    public function createScheme($data)
+    public function createScheme($data): void
     {
         DB::statement(DB::raw("CREATE SCHEMA IF NOT EXISTS inn_{$data['company_inn']}"));
 

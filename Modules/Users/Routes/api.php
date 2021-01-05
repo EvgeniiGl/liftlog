@@ -1,5 +1,5 @@
 <?php
-
+namespace  Modules\Users\Routes;
 //Route::group(['namespace' => 'API'], function () {
 //
 //    Route::group(
@@ -13,10 +13,15 @@
 //    );
 //});
 
+use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace' => 'Api'], function () {
-    Route::group(['middleware' => 'auth:api',
+class api extends Route{
+
+}
+
+api::group(['namespace' => 'Api'], function () {
+    api::group(['middleware' => 'auth:api',
                   'prefix'     => 'users'], function () {
-        Route::get('getuser', 'UsersController@getUser');
+        api::get('getuser', 'UsersController@getUser');
     });
 });

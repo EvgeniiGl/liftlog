@@ -17,7 +17,7 @@ class SharedDataHelper
      * @param $data array|int|string массив данных для передачи.
      * @return void
      */
-    public function put($key, $data)
+    public function put(string $key, $data): void
     {
         SharedData::put([$key => $data]);
     }

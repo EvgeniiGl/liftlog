@@ -34,12 +34,11 @@ class ChatServer extends Command
         parent::__construct();
     }
 
+
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * Run server socket
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info("Ratchet server start");
         $server = IoServer::factory(

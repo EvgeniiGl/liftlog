@@ -71,20 +71,17 @@ class AddressRepository
 		);
 	}
 
-	public function getAddressByRecords(iterable $records)
-	{
+    /**
+     * @param  array  $records
+     * @return array
+     */
+	public function getAddressByRecords(array $records): array
+    {
 		//TODO rewrite change $records to records id
-		$records = gettype($records) === 'array' ? $records : $records->toArray();
 		$recordsId = array_map(function ($record) {
-			return gettype($record) === 'array' ? $record['id'] : $record->id;
+			return is_array($record) ? $record['id'] : $record->id;
 		}, $records);
-		$builder = DB::table($this->tableName);
-		$builder->leftJoin($this->columnsName['city']['table'],
-			$this->columnsName['city']['table'] . "." . $this->columnsName['city']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['city']['ref']);
-		$builder->leftJoin($this->columnsName['street']['table'],
-			$this->columnsName['street']['table'] . "." . $this->columnsName['street']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['street']['ref']);
+        $builder = $this->getBuilderJoinCityAndStreet();
 		$builder->leftJoin("records_address", "address_id", "=", "_Reference10._IDRRef")->whereIn("records_id",
 			$recordsId);
 		$this->columns[] = 'records_id';
@@ -121,13 +118,8 @@ class AddressRepository
 			$this->columnsName['city']['table'] . "." . "_Description AS city",
 			$this->columnsName['street']['table'] . "." . "_Description AS street"
 		);
-		$builder = DB::table($this->tableName);
-		$builder->leftJoin($this->columnsName['city']['table'],
-			$this->columnsName['city']['table'] . "." . $this->columnsName['city']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['city']['ref']);
-		$builder->leftJoin($this->columnsName['street']['table'],
-			$this->columnsName['street']['table'] . "." . $this->columnsName['street']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['street']['ref']);
+
+        $builder = $this->getBuilderJoinCityAndStreet();
 
 		$builder1 = clone $builder;
 		foreach ($partsSearch as $part) {
@@ -191,6 +183,19 @@ class AddressRepository
 		return $data;
 	}
 
+	private  function  getBuilderJoinCityAndStreet(): \Illuminate\Database\Query\Builder
+    {
+        $builder = DB::table($this->tableName);
+        $builder->leftJoin($this->columnsName['city']['table'],
+            $this->columnsName['city']['table'].".".$this->columnsName['city']['id'], '=',
+            $this->tableName.'.'.$this->columnsName['city']['ref']);
+        $builder->leftJoin($this->columnsName['street']['table'],
+            $this->columnsName['street']['table'].".".$this->columnsName['street']['id'], '=',
+            $this->tableName.'.'.$this->columnsName['street']['ref']);
+        return $builder;
+    }
+
+
 	/**
 	 * @param array $ids
 	 * @return array|iterable
@@ -200,13 +205,7 @@ class AddressRepository
 		$ids = array_map(function ($id) {
 			return DB::raw("CONVERT(VARBINARY(16), $id)");
 		}, $ids);
-		$builder = DB::table($this->tableName);
-		$builder->leftJoin($this->columnsName['city']['table'],
-			$this->columnsName['city']['table'] . "." . $this->columnsName['city']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['city']['ref']);
-		$builder->leftJoin($this->columnsName['street']['table'],
-			$this->columnsName['street']['table'] . "." . $this->columnsName['street']['id'], '=',
-			$this->tableName . '.' . $this->columnsName['street']['ref']);
+        $builder = $this->getBuilderJoinCityAndStreet();
 		$builder->whereIn($this->tableName . '.' . $this->columnsName['id'], $ids);
 		$addresses = $builder->select($this->columns)->get()->toArray();
 		return $addresses;

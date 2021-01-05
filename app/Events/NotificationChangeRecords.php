@@ -24,10 +24,10 @@ class NotificationChangeRecords
     /**
      * Create a new event instance.
      *
-     * @param string $recordsId id records
-     * @param ConnectionPool $pConnect
+     * @param  int  $recordsId  id records
+     * @param  ConnectionPool  $pConnect
      */
-    public function __construct(string $recordsId, ConnectionPool $pConnect)
+    public function __construct(int $recordsId, ConnectionPool $pConnect)
     {
         $this->recordsId = $recordsId;
         $this->pConnect  = $pConnect;

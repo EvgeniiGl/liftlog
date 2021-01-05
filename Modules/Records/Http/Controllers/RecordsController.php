@@ -11,6 +11,7 @@ use App\Models\Type;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
@@ -63,9 +64,10 @@ class RecordsController extends Controller
         $this->sharedDataHelper  = $sharedDataHelper;
     }
 
+
     /**
-     * Display a listing of the resource.
-     * @return View | Redirector
+     *
+     * @return RedirectResponse|View
      */
     public function index()
     {
@@ -76,7 +78,7 @@ class RecordsController extends Controller
 //        dd($newRecords);
         $record = new Record();
         $user   = Auth::user();
-        if ($user->cannot('view', $record)) {
+        if ($user !== null && $user->cannot('view', $record)) {
             Session::flash('message', 'Доступ запрещен!');
             Session::flash('alert-class', 'alert-danger');
             return redirect('login');
@@ -84,8 +86,8 @@ class RecordsController extends Controller
 
         $currentUser = [
             'id'   => Auth::id(),
-            'name' => Auth::user()->name,
-            'role' => Auth::user()->role
+            'name' => $user->name,
+            'role' => $user->role
         ];
 
         $types = Type::all();
@@ -97,9 +99,10 @@ class RecordsController extends Controller
 
     /**
      * Api init get list records, users, attach addresses
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function getRecords(Request $request)
+    public function getRecords(Request $request): JsonResponse
     {
         $record = new Record();
         $user   = Auth::user();
@@ -156,7 +159,7 @@ class RecordsController extends Controller
         $data['type_id']    = $type->firstOrNew(['title' => $data['type']])->id;
         unset($data['type']);
         $lastInsertId = $this->recordsRepository->create($data);
-        $this->recordsRepository->atachAddressesToRecord($lastInsertId, $data['ids_selected_adr']);
+        $this->recordsRepository->attachAddressesToRecord($lastInsertId, $data['ids_selected_adr']);
         event(new RecordsChanged($lastInsertId));
         if (!empty($data['maker_id'])) {
             $msg = \App::make("App\Services\Firebase\SentRecordMessage");
@@ -183,7 +186,7 @@ class RecordsController extends Controller
         $data['type_id']    = $type->firstOrNew(['title' => $data['type']])->id;
         unset($data['type']);
         $this->recordsRepository->update($data, $data['id']);
-        $this->recordsRepository->atachAddressesToRecord($data['id'], $data['ids_selected_adr']);
+        $this->recordsRepository->attachAddressesToRecord($data['id'], $data['ids_selected_adr']);
 
         event(new RecordsChanged($data['id']));
         return response()->json([
