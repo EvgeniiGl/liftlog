@@ -7,6 +7,7 @@ use App\Helpers\SharedDataHelper;
 use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -39,7 +40,7 @@ class UsersController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function index()
     {
@@ -138,10 +139,10 @@ class UsersController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  int  $id
+     * @return RedirectResponse|null
      */
-    public function destroy($id)
+    public function destroy(int $id): ?RedirectResponse
     {
         $user = Auth::user();
         if ($user->cannot('write', $user)) {

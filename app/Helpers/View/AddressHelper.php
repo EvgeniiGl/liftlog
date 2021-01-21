@@ -13,9 +13,9 @@ class AddressHelper
      *
      * @return string
      */
-    public static function addressToStringHelper(\stdClass $address)
+    public static function addressToStringHelper(\stdClass $address): ?string
     {
-        if (empty($address)) {
+        if ($address === null) {
             return null;
         }
         $city        = empty($address->city) ? '' : $address->city . ', ';

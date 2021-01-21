@@ -9,8 +9,17 @@ use Illuminate\Support\Facades\DB;
 class RecordsRepository
 {
     // model property on class instances
+    /**
+     * @var Record
+     */
     protected $model;
+    /**
+     * @var int
+     */
     protected $limit = 150;
+    /**
+     * @var string[]
+     */
     protected $columnsRecord = [
         'records.id',
         'num',
@@ -30,11 +39,18 @@ class RecordsRepository
         'types.title AS type'
     ];
 
+    /**
+     * RecordsRepository constructor.
+     */
     public function __construct()
     {
         $this->model = new Record();
     }
 
+    /**
+     * @param $firstRecord
+     * @return mixed
+     */
     public function getRecords($firstRecord)
     {
         if (!$firstRecord) {
@@ -73,9 +89,13 @@ class RecordsRepository
         //TODO rewrite it in one request
         //TODO STRING_AGG not working on mssql 2013
         $adrs_id = $this->getAdrsRecords($records)->toArray();
-        return $this->setUtcTimeAndAtachAddress($records, $adrs_id);;
+        return $this->setUtcTimeAndAttachAddress($records, $adrs_id);;
     }
 
+    /**
+     * @param $maker_id
+     * @return mixed
+     */
     public function getUserRecords($maker_id)
     {
         $tableRecords = 'records';
@@ -85,12 +105,16 @@ class RecordsRepository
             'records.type_id')->take(100)->orderBy('records.id', 'desc')
             ->get()->toArray();
         $adrs_id = $this->getAdrsRecords($select)->toArray();
-        $recordsUser = $this->setUtcTimeAndAtachAddress($select, $adrs_id);
+        $recordsUser = $this->setUtcTimeAndAttachAddress($select, $adrs_id);
         return $recordsUser;
     }
 
 
-    public function prependRecords($firstRecord)
+    /**
+     * @param $firstRecord
+     * @return Iterable
+     */
+    public function prependRecords($firstRecord):Iterable
     {
         $lastRecord = --$firstRecord - $this->limit;
 
@@ -125,11 +149,16 @@ class RecordsRepository
         //TODO rewrite it in one request
         $adrs_id = $this->getAdrsRecords($records)->toArray();
 
-        return $this->setUtcTimeAndAtachAddress($records, $adrs_id);
+        return $this->setUtcTimeAndAttachAddress($records, $adrs_id);
     }
 
 
-    private function setUtcTimeAndAtachAddress($records, $adrs_id)
+    /**
+     * @param $records
+     * @param $adrs_id
+     * @return Iterable
+     */
+    private function setUtcTimeAndAttachAddress($records, $adrs_id):Iterable
     {
         foreach ($records as $record) {
             if (!empty($record->time_create)) {
@@ -150,11 +179,15 @@ class RecordsRepository
             if (!empty($record->time_incident)) {
                 $record->time_incident = $this->model->getTimeUtc($record->time_incident);
             }
-            $this->atachAdrToRecord($record, $adrs_id);
+            $this->attachAdrToRecord($record, $adrs_id);
         }
         return $records;
     }
 
+    /**
+     * @param $records
+     * @return \Illuminate\Support\Collection
+     */
     public function getAdrsRecords($records)
     {
 //TODO rewrite it in one request
@@ -170,7 +203,11 @@ class RecordsRepository
         return $adrs_id;
     }
 
-    public function atachAdrToRecord($record, $adrs_id)
+    /**
+     * @param $record
+     * @param $adrs_id
+     */
+    public function attachAdrToRecord($record, $adrs_id)
     {
         $record->addresses_id = [];
         foreach ($adrs_id as $adr) {
@@ -180,6 +217,10 @@ class RecordsRepository
         }
     }
 
+    /**
+     * @param  array  $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         $data['num'] = $this->model->latest()->first()->num + 1;
@@ -189,7 +230,12 @@ class RecordsRepository
         return $lastInsertId;
     }
 
-    public function atachAddressesToRecord(string $record_id, string $ids_selected_address)
+    /**
+     * @param  string  $record_id
+     * @param  string  $ids_selected_address
+     * @return bool
+     */
+    public function attachAddressesToRecord(string $record_id, string $ids_selected_address)
     {
         DB::table('records_address')->where(['records_id' => $record_id])->delete();
         $arrAdrId = explode(",", $ids_selected_address);
@@ -204,6 +250,12 @@ class RecordsRepository
     }
 
     // update record in the database
+
+    /**
+     * @param  array  $data
+     * @param $id
+     * @return mixed
+     */
     public function update(array $data, $id)
     {
         $record = $this->model->find($id);
@@ -215,18 +267,31 @@ class RecordsRepository
     }
 
     // remove record from the database
+
+    /**
+     * @param $id
+     * @return int
+     */
     public function delete($id)
     {
         return $this->model->destroy($id);
     }
 
     // show the record with the given id
+
+    /**
+     * @param $id
+     */
     public function show($id)
     {
 //        return $this->model->findOrFail($id);
     }
 
 
+    /**
+     * @param $id_address
+     * @return mixed
+     */
     public function searchRecordsByIdAddress($id_address)
     {
 
@@ -238,7 +303,7 @@ class RecordsRepository
         $select = $builder->select($this->columnsRecord)->take(300)
             ->get()->toArray();
         $adrs_id = $this->getAdrsRecords($select)->toArray();
-        $records = $this->setUtcTimeAndAtachAddress($select, $adrs_id);
+        $records = $this->setUtcTimeAndAttachAddress($select, $adrs_id);
 //        $dataArray = collect($records)->map(function($x){ return (array) $x; })->toArray();
 //        dd($dataArray);
         return $records;
@@ -249,6 +314,10 @@ class RecordsRepository
 
     }
 
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function getUserNewAndInWorkRecords($user_id)
     {
         $records = Record::where([
@@ -271,6 +340,10 @@ class RecordsRepository
         return $records;
     }
 
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function getUserCompletedRecords($user_id)
     {
         $items = 7;
@@ -327,8 +400,8 @@ class RecordsRepository
 			theme_end,
 			notice,
 			types.title AS type,
-    		(SELECT COUNT(DISTINCT records.id) as count 
-    			FROM records 
+    		(SELECT COUNT(DISTINCT records.id) as count
+    			FROM records
     				LEFT JOIN records_address ON records_address.records_id = records.id
 				    LEFT JOIN types ON records.type_id = types.id
     			WHERE (1=1)
@@ -359,7 +432,7 @@ class RecordsRepository
 			FROM records
 				     LEFT JOIN types ON records.type_id = types.id
 				     LEFT JOIN records_address ON records_address.records_id = records.id
-			WHERE (1=1)  
+			WHERE (1=1)
 				  {$filterByUserId}
 				  {$filterByAddressId}
 				  {$filterByTimeStart}
