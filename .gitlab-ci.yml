@@ -1,0 +1,32 @@
+stages:
+  - build
+  - test
+  - deploy
+
+Docker build:
+  stage: build
+  script:
+    - echo "docker success"
+  tags:
+    - docker
+
+Unit test:
+  stage: test
+  script:
+    - echo "test Unit success"
+  tags:
+    - docker
+
+Lint test:
+  stage: test
+  script:
+    - echo "test  lint success"
+  tags:
+    - docker
+
+Deploy to dev:
+  stage: deploy
+  script:
+    - echo 'build is good ${TEST_VAR} name ${CI_PROJECT_NAME}' >> ~/build.txt
+  tags:
+    - dev-shell
