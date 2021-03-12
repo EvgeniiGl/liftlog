@@ -27,6 +27,6 @@ Lint test:
 Deploy to dev:
   stage: deploy
   script:
-    - echo 'build is good ${TEST_VAR} name ${CI_PROJECT_NAME}' >> ~/build.txt
+    - echo 'build is goods ${TEST_VAR} name ${CI_PROJECT_NAME}' >> ~/build.txt
   tags:
     - deploy
